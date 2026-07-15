@@ -11,4 +11,6 @@ Analysis (priorities, risk, who-owns-what) is done separately, later, across han
 
 ## Use
 
-Load `skills/offboard-me/SKILL.md` into your agent as instructions (however your agent takes skills or custom prompts), then tell it you're offboarding. It asks you a question, and you're going.
+Clone, then load `SKILL.md` into your agent as instructions (however your agent takes skills or custom prompts), and tell it you're offboarding. It asks you a question, and you're going.
+
+    git clone https://github.com/rnovatorov/offboard-me.git
