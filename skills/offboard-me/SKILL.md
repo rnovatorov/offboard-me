@@ -18,7 +18,7 @@ A single markdown file: a small header, plus two lists —
 
 The Questions list works as a stack (last in, first out) — work it depth-first, since following one topic into the next is easier for the person than hopping around.
 
-1. **Setup (silent).** The runner is the person being offboarded — infer name and date; don't quiz them about identity or paths. Create `./<name>-handoff.md` from `references/handoff-template.md` (it pre-seeds Questions: opener at the end → asked first; backstops above → the safety net).
+1. **Setup (silent).** The runner is the person being offboarded — infer name and date; don't quiz them about identity or paths. Create `./<name>-handoff.md` from `references/handoff-template.md` (it pre-seeds Questions: opener at the end → asked first; the rest are starter questions that surface last, catching anything you didn't bring up).
 2. **The last question is the current one.** Ask it; when answered, remove it and add it to **Answers** as the next numbered item, with the person's facts as sub-bullets beneath.
 3. **Add new questions to the end** — they're asked next, before anything above them.
 4. **Move on when the person is frustrated, or you've gathered enough** — including when the rest is findable in a repo or system (note that and move on). Don't badger.
