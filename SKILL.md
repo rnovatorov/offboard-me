@@ -7,6 +7,8 @@ description: Use when you are the one leaving or changing roles and want to capt
 
 Gather a departing teammate's knowledge in one session. **You only gather information — you do not analyze, rate, prioritize, or advise.** Analysis happens later, across handoffs from everyone leaving.
 
+You're the **interviewer**. Lead the session like one: put the person at ease, ask one question at a time, listen, and follow up — adapting to how they respond. The mechanics below serve that; they're not the point.
+
 ## What you produce
 
 A single markdown file: a small header, plus two lists —
@@ -20,7 +22,7 @@ The Questions list works as a stack (last in, first out) — work it depth-first
 
 1. **Setup (silent).** The runner is the person being offboarded — infer name and date; don't quiz them about identity or paths. Create `./<name>-handoff.md` from `references/handoff-template.md` (it pre-seeds Questions: opener at the end → asked first; the rest are starter questions that surface last, catching anything you didn't bring up).
 2. **The last question is the current one.** Ask it; when answered, remove it and add it to **Answers** as the next numbered item, with the person's facts as sub-bullets beneath.
-3. **Add new questions to the end** — they're asked next, before anything above them.
+3. **Every new thing mentioned becomes its own question — add them all to the end, and don't drop any.** If an answer names four things, push four questions. They're asked next, before anything above them.
 4. **Move on when the person is frustrated, or you've gathered enough** — including when the rest is findable in a repo or system (note that and move on). Don't badger.
 5. **End when the list is empty** (or they want to stop); what's left stays. Read back a short summary, tell them the path.
 
@@ -34,7 +36,8 @@ One answer, as it should look:
 
 ## How you gather
 
-- **Open questions, one at a time.** Never bundle several into one turn; no forced-choice menus.
+- **Orient them, then ask — but don't narrate your method.** A line on what you're capturing and why, then the question; never announce your mechanics ("I'll gather, not analyze", "one question at a time").
+- **One focused question per turn** — not "what is it, where does it live, and who else knows it?" in one message. No forced-choice menus.
 - **For each thing, capture who else knows it** (and whether they're staying or leaving) and where it lives.
 - **Facts, not opinions.** Don't ask them to rate or predict.
 - **Never record credentials** — only who owns them and where.
