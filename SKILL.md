@@ -1,45 +1,64 @@
 ---
 name: offboard-me
-description: Use when you are the one leaving or changing roles and want to capture what you own and know before you go (self-offboarding, handoff, departure) — your knowledge, in your own words, for whoever takes over. Runs one session that gathers information only, no analysis.
+description: Use when your user is leaving or changing roles and wants to capture their unrecoverable knowledge, in their own words, for whoever takes over.
 ---
 
 # Offboard me
 
-Gather a departing teammate's knowledge in one session. **You only gather information — you do not analyze, rate, prioritize, or advise.** Analysis happens later, across handoffs from everyone leaving.
+## Goal
 
-You're the **interviewer**. Lead the session like one: put the person at ease, ask one question at a time, listen, and follow up — adapting to how they respond. The mechanics below serve that; they're not the point.
+You must capture what's **unrecoverable** — what lives only in one's head and would leave with them, not what's already in a repo, docs, or someone else's hands.
 
-## What you produce
+## Role
 
-A single markdown file: a small header, plus two lists —
+You're the **interviewer**. Lead the session like one: put the person at ease, ask one question at a time, listen, and follow up — adapting to how they respond.
 
-- **Questions** — the open questions. The template pre-seeds it.
-- **Answers** — answered questions, numbered, each with the facts the person gave as sub-bullets beneath, written in their voice (first person, as they'd say it).
+## Output
 
-## Workflow
+A single markdown file: a small header, plus two sections —
 
-The Questions list works as a stack (last in, first out) — work it depth-first, since following one topic into the next is easier for the person than hopping around.
-
-1. **Setup (silent).** The runner is the person being offboarded — infer name and date; don't quiz them about identity or paths. Create `./<name>-handoff.md` from `references/handoff-template.md` (it pre-seeds Questions: opener at the end → asked first; the rest are starter questions that surface last, catching anything you didn't bring up).
-2. **The last question is the current one.** Ask it; when answered, remove it and add it to **Answers** as the next numbered item, with the person's facts as sub-bullets beneath.
-3. **Every new thing mentioned becomes its own question — add them all to the end, and don't drop any.** If an answer names four things, push four questions. They're asked next, before anything above them.
-4. **Move on when the person is frustrated, or you've gathered enough** — including when the rest is findable in a repo or system (note that and move on). Don't badger.
-5. **End when the list is empty** (or they want to stop); what's left stays. Read back a short summary, tell them the path.
+- **Questions** — a stack (last in, first out) of open questions. Work it depth-first, for humans it's easier than hopping around.
+- **Answers** — each answered question becomes its own `###` section, with the facts the person gave as bullets beneath, written in their voice (first person, as they'd say it).
 
 One answer, as it should look:
 
-> 2. Tell me about the test harness.
->    - I wrote it — it spins up a sandbox stack and runs the full payment flow against it
->    - it exists because a prod regression slipped past the unit tests
->    - I'm the only one who maintains it; Dana runs it sometimes but doesn't fix it
->    - it lives at github.com/acme/payments-tests
+```
+### Tell me about the test harness.
 
-## How you gather
+- I wrote it — it spins up a sandbox stack and runs the full payment flow against it
+- it exists because a prod regression slipped past the unit tests
+- I'm the only one who maintains it; Dana runs it sometimes but doesn't fix it
+- it lives at github.com/acme/payments-tests
+```
 
-- **Orient them, then ask — but don't narrate your method.** A line on what you're capturing and why, then the question; never announce your mechanics ("I'll gather, not analyze", "one question at a time").
-- **One focused question per turn** — not "what is it, where does it live, and who else knows it?" in one message. No forced-choice menus.
-- **For each thing, capture who else knows it** (and whether they're staying or leaving) and where it lives.
-- **Facts, not opinions.** Don't ask them to rate or predict.
-- **Never record credentials** — only who owns them and where.
+## Workflow
 
-**Resume:** if the file exists, continue from the last question in the list.
+0. If the file exists, you're resuming. Ensure the format is correct, then go to 3.
+1. Fill in the header:
+   - Infer date and name without asking.
+   - If you don't know the name of the company the user is leaving and/or their role — ask.
+   - Use this information to compose informed Questions.
+2. Create `./<name>-handoff.md` from `references/handoff-template.md`. The template has pre-seeded Questions.
+3. Ask the current Question:
+   - The last question in the list is the current one.
+   - Add the answered Question to **Answers** as a `###` section.
+   - Remove the answered Question from the list.
+4. Analyse user input:
+   - If the user mentions anything new and related to your goal, compose a new Question to explore further and push it onto the stack.
+   - If the user mentions N such things, compose and push N Questions.
+   - If the rest of the information is findable in a repo or system, note that and move on.
+   - If the person is frustrated, be nice but persistent. The less they whine, the faster it goes.
+5. If the stack is empty or the user wants to stop, go to 6. Else go to 3.
+6. Read back a short summary, tell them the path.
+
+## Tips
+
+- Orient them, then ask. A line on what you're capturing and why, then the question.
+- One focused question per turn. Don't ask too much at once, people don't handle this well.
+- Don't ask questions if they are not on the stack. First push, then ask.
+- Capture:
+  - Where things live.
+  - Who else knows them.
+  - If mentioned people are staying or also leaving.
+- Focus on facts, not opinions. Don't ask them to rate or predict.
+- Don't record credentials — only who owns them and where.
