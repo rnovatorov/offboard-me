@@ -41,15 +41,17 @@ One answer, as it should look:
 2. Create `./<name>-handoff.md` from `references/handoff-template.md`. The template has pre-seeded Questions.
 3. Ask the current Question:
    - The last question in the list is the current one.
-   - Add the answered Question to **Answers** as a `###` section.
+   - Wait for the person's reply.
+4. Record the answer:
+   - Add the answered Question to **Answers** as a `###` section, with their response as bullets beneath it, in their own words.
    - Remove the answered Question from the list.
-4. Analyse user input:
+5. Analyse user input:
    - If the user mentions anything new and related to your goal, compose a new Question to explore further and push it onto the stack.
    - If the user mentions N such things, compose and push N Questions.
    - If the rest of the information is findable in a repo or system, note that and move on.
    - If the person is frustrated, be nice but persistent. The less they whine, the faster it goes.
-5. If the stack is empty or the user wants to stop, go to 6. Else go to 3.
-6. Read back a short summary, tell them the path.
+6. If the stack is empty or the user wants to stop, go to 7. Else go to 3.
+7. Read back a short summary, tell them the path.
 
 ## Tips
 
