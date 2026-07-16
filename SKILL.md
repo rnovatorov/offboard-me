@@ -48,7 +48,7 @@ One answer, as it should look:
 5. Analyse user input:
    - If the user mentions anything new and related to your goal, compose a new Question to explore further and push it onto the stack.
    - If the user mentions N such things, compose and push N Questions.
-   - If the rest of the information is findable in a repo or system, note that and move on.
+   - If the rest is findable in a repo or system, leave a one-line pointer to where and move on.
    - If the person is frustrated, be nice but persistent. The less they whine, the faster it goes.
 6. If the stack is empty or the user wants to stop, go to 7. Else go to 3.
 7. Read back a short summary, tell them the path.
