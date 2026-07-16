@@ -35,8 +35,8 @@ One answer, as it should look:
 
 0. If the file exists, you're resuming. Ensure the format is correct, then go to 3.
 1. Fill in the header:
-   - Infer date and name without asking.
-   - If you don't know the name of the company the user is leaving and/or their role — ask.
+   - Infer date and their name without asking.
+   - If you don't know the company name and/or their role — ask.
    - Use this information to compose informed Questions.
 2. Create `./<name>-handoff.md` from `references/handoff-template.md`. The template has pre-seeded Questions.
 3. Ask the current Question:
