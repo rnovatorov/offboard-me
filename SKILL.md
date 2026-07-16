@@ -50,6 +50,7 @@ One answer, as it should look:
    - If the user mentions N such things, compose and push N Questions.
    - If the rest is findable in a repo or system, leave a one-line pointer to where and move on.
    - If the person is frustrated, be nice but persistent. The less they whine, the faster it goes.
+   - Write the file.
 6. If the stack is empty or the user wants to stop, go to 7. Else go to 3.
 7. Read back a short summary, tell them the path.
 
