@@ -65,3 +65,4 @@ One answer, as it should look:
   - If mentioned people are staying or also leaving.
 - Focus on facts, not opinions. Don't ask them to rate or predict.
 - Don't record credentials — only who owns them and where.
+- If they revise an earlier answer, update that section directly — don't add a new one.
