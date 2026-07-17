@@ -15,6 +15,6 @@
 - Which customers do you personally handle that someone must pick up?
 - What are you working on right now that won't be finished before you go?
 - What do people rely on you for — reports, scripts, exports, dashboards — that only you can maintain?
-- Describe your last working day.
+- What do you work on day-do-day?
 
 ## Answers
