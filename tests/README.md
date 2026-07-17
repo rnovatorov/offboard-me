@@ -6,14 +6,14 @@ All paths below are relative to the **repo root**. The interviewer runs with the
 
 ## Model
 
-You are the **primary** — a coordinator only. You never interview, answer, or judge. Per case you spawn one **employee** subagent. Each employee:
+You are the **primary** — coordinator and analyst. You never interview or answer, but you **do** judge the result (see [Analysis](#analysis)). Per case you spawn one **employee** subagent. Each employee:
 
 - *is* the persona — it carries the background, the personality, what's in their head, and the triggers;
 - spawns its own **interviewer** subagent — the agent under test, whose context is *only* `SKILL.md` + the kickoff + the running conversation;
 - runs the interview with it turn by turn, answering the interviewer's questions **in character**;
 - collects the transcript and the handoff file the interviewer wrote, and returns them.
 
-You spawn one employee per case (concurrently if you can), wait for all of them to finish, then aggregate the results. There is **no judge** — a human reviews the transcripts and handoffs.
+You spawn one employee per case (concurrently if you can), wait for all of them to finish, then [analyse](#analysis) and aggregate the results.
 
 The isolation that matters is the **interviewer's** context: `SKILL.md` + kickoff + conversation, nothing else. The employee builds the interviewer's prompt and must never leak the background, personality, head-knowledge, triggers, or any hint of a test into it.
 
@@ -73,7 +73,7 @@ Run every `tests/cases/*.md` (or a single case, if asked for one). For each case
 2. **Make a run dir:** `tests/results/<case>/<YYYYMMDD-HHMMSS>/`.
 3. **Spawn the employee** using `tests/prompts/employee.md` — fill its placeholders (`<name>`, `<company>`, `<role>`, `<run_dir>`, `<case>`, `<turns>`). Then append the **background**, the **personality**, the **kickoff** (`## Kickoff`), the **head-knowledge** (`## What's in their head`), and the **triggers** (`## During the interview`). The employee will in turn spawn the interviewer from `SKILL.md` + the kickoff.
 4. Wait for every employee to finish.
-5. **Aggregate:** for each case, surface its `tests/results/<case>/<run>/transcript.md` and `handoff.md`, and print the one-line result it returned.
+5. **Analyse and aggregate:** for each case, run the [analysis](#analysis), then surface its `tests/results/<case>/<run>/transcript.md` and `handoff.md` and print the one-line result it returned plus the verdict.
 
 ## Hard rules
 
@@ -82,3 +82,14 @@ Run every `tests/cases/*.md` (or a single case, if asked for one). For each case
 - Never edit `SKILL.md`, a background, a personality, or a case during a run.
 - One question per interviewer turn. If it asks several at once, the employee answers only the last/focused one and flags it in the transcript.
 - Respect the turn budget as a hard cap — testing is expensive.
+
+## Analysis
+
+The primary is the analyst. It has the case and the head-knowledge (the interviewer never does), so it can compare what was captured against the ground truth. For each case, read the `transcript.md` and `handoff.md` and assess:
+
+- **Isolation** — the interviewer saw only `SKILL.md` + kickoff + conversation. Flag any leak of the background, the personality, the case, or any hint of a test. A leak invalidates the run.
+- **Skill-rule adherence** — one focused question per turn; depth-first on the question stack; answers recorded in the person's voice as `###` sections; the stack updated (answered questions removed, new ones pushed); revisions fixed in place; correct file format. Flag repeats, multi-question turns, or a stack left unworked.
+- **Capture** — for each item in the case's *What's in their head* (especially the unrecoverable, only-I-know lore), note whether it made it into the handoff fully, partially, or was missed. The primary grades against the head-knowledge, not the other way.
+- **Turns** — turns used vs. the budget; whether the interview closed on an empty stack or hit the cap.
+
+Print a verdict per case — `pass` / `pass with notes` / `invalid (reason)` — with the capture checklist and any flags. The raw `transcript.md` and `handoff.md` stay in the run dir for a human to review.
