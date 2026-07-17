@@ -22,6 +22,7 @@ tests/
   cases/<name>.md               # a person + their departure + kickoff + what's in their head
   prompts/orchestrator.md       # per-case runner: spawns, relays, writes artifacts (with <placeholders>)
   prompts/employee.md           # persona prompt the orchestrator fills and spawns (with <placeholders>)
+  prompts/interviewer.md        # interviewer prompt the orchestrator fills and spawns (with <placeholders>)
   results/                      # gitignored; one run dir per case execution
 ```
 
@@ -72,6 +73,7 @@ Run every `tests/cases/*.md` (or a single case, if asked for one), one orchestra
 
 - The interviewer sees only `SKILL.md` + the kickoff + the conversation — nothing else. A leak of the background, personality, case, or any hint of a test invalidates the run; redo it.
 - The employee sees only its persona material (background, personality, situation, what's in their head) — no transcript, handoff, turn budget, or test sign. It never uses tools; it only talks.
+- Relay verbatim. When you pass a turn between the two, send only the speaker's exact words — no labels ("The person said:"), no framing, no instructions ("reply now", "return only"). Anything you add becomes part of their view and invalidates the run.
 - The orchestrator builds both prompts and may use tools only to spawn/resume the two subagents and write the transcript and handoff.
 - Never edit `SKILL.md`, a background, a personality, or a case during a run.
 - The turn budget is a hard cap, enforced by the orchestrator (circuit breaker).
