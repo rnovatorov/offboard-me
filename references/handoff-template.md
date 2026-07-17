@@ -6,13 +6,15 @@
 
 ## Questions
 
-- Any business rules or history only you know?
-- Any recurring issues or manual fixes only you know?
-- Any third-party services or vendors you deal with?
-- Any data pipelines or reports people rely on?
-- Who do you work with?
-- Any meetings or rituals you run?
-- Anything in infrastructure or ops you handle?
-- What do you work on day-to-day?
+- Which files on your computer would be most useful to your colleagues?
+- Where in your work have you had to cut corners or rely on a quick fix that someone should eventually clean up?
+- Do you hold any passwords, credentials, or secrets the team will need after you leave?
+- Walk me through the last tricky bug or incident you handled.
+- When you write docs, guides, or code snippets, where do you keep them?
+- Which third parties are you the main point of contact for?
+- Which customers do you personally handle that someone must pick up?
+- What are you working on right now that won't be finished before you go?
+- What do people rely on you for — reports, scripts, exports, dashboards — that only you can maintain?
+- Describe your last working day.
 
 ## Answers
