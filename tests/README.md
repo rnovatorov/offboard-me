@@ -8,8 +8,8 @@ All paths below are relative to the **repo root**. The interviewer runs with the
 
 You are the **primary** — coordinator and analyst. You never interview or answer, but you **do** judge the result (see [Analysis](#analysis)). Per case you spawn one **employee** subagent. Each employee:
 
-- *is* the persona — it carries the background, the personality, and what's in their head;
-- spawns its own **interviewer** subagent — the agent under test. The interviewer loads the skill itself by reading `SKILL.md`; its context is *only* that skill + the kickoff + the running conversation;
+- _is_ the persona — it carries the background, the personality, and what's in their head;
+- spawns its own **interviewer** subagent — the agent under test. The interviewer loads the skill itself by reading `SKILL.md`; its context is _only_ that skill + the kickoff + the running conversation;
 - runs the interview with it turn by turn, answering the interviewer's questions **in character**;
 - collects the transcript and the handoff file the interviewer wrote, and returns them.
 
@@ -89,7 +89,7 @@ The primary is the analyst. It has the case and the head-knowledge (the intervie
 
 - **Isolation** — the interviewer saw only `SKILL.md` + kickoff + conversation. Flag any leak of the background, the personality, the case, or any hint of a test. A leak invalidates the run.
 - **Skill-rule adherence** — one focused question per turn; depth-first on the question stack; answers recorded in the person's voice as `###` sections; the stack updated (answered questions removed, new ones pushed); revisions fixed in place; correct file format. Flag repeats, multi-question turns, or a stack left unworked.
-- **Capture** — for each item in the case's *What's in their head* (especially the unrecoverable, only-I-know lore), note whether it made it into the handoff fully, partially, or was missed. The primary grades against the head-knowledge, not the other way.
+- **Capture** — for each item in the case's _What's in their head_ (especially the unrecoverable, only-I-know lore), note whether it made it into the handoff fully, partially, or was missed. The primary grades against the head-knowledge, not the other way.
 - **Turns** — turns used vs. the budget; whether the interview closed on an empty stack or hit the cap.
 
 Print a verdict per case — `pass` / `pass with notes` / `invalid (reason)` — with the capture checklist and any flags. The raw `transcript.md` and `handoff.md` stay in the run dir for a human to review.
