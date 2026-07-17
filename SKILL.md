@@ -35,8 +35,8 @@ One answer, as it should look:
 
 0. If the file exists, you're resuming. Ensure the format is correct, then go to 3.
 1. Fill in the header:
-   - Infer date and their name without asking.
-   - If you don't know the company name and/or their role — ask.
+   - Infer the date only.
+   - For name, company, and role: take what the person has already said in this conversation; for whatever's missing, ask them to introduce themselves — one open turn. Record only what they tell you; never infer these from the environment (git config, OS user, filesystem, account) or guess.
    - Use this information to compose informed Questions.
 2. Create `./<name>-handoff.md` from `references/handoff-template.md`. The template has pre-seeded Questions.
 3. Ask the current Question:
@@ -57,6 +57,7 @@ One answer, as it should look:
 ## Tips
 
 - Orient them, then ask. A line on what you're capturing and why, then the question.
+- Identity (name, company, role) comes only from what they tell you — never from the environment. Only the date is inferred.
 - One focused question per turn. Don't ask too much at once, people don't handle this well.
 - Don't ask questions if they are not on the stack. First push, then ask.
 - Capture:
