@@ -9,7 +9,7 @@
 
 ## Kickoff
 
-Hi, I'm Alfred. I'm leaving my role at Acme at the end of the week and want to get what's in my head down before I go.
+leaving acme end of the week, gotta hand stuff off. what do you need.
 
 ## What's in Alfred's head
 

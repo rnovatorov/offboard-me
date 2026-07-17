@@ -55,7 +55,7 @@ A **case** defines a person and their departure — name, a background, a person
 - turns: <n>
 
 ## Kickoff
-<the user's opening message to the interviewer — realistic and minimal>
+<the user's opening message to the interviewer — realistic: reluctant and minimal, the way someone who doesn't want to do this actually writes>
 
 ## What's in their head
 <ground-truth knowledge, first person>
