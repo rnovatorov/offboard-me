@@ -9,13 +9,13 @@ All paths below are relative to the **repo root**. The interviewer runs with the
 You are the **primary** — coordinator and analyst. You never interview or answer, but you **do** judge the result (see [Analysis](#analysis)). Per case you spawn one **employee** subagent. Each employee:
 
 - *is* the persona — it carries the background, the personality, what's in their head, and the triggers;
-- spawns its own **interviewer** subagent — the agent under test, whose context is *only* `SKILL.md` + the kickoff + the running conversation;
+- spawns its own **interviewer** subagent — the agent under test. The interviewer loads the skill itself by reading `SKILL.md`; its context is *only* that skill + the kickoff + the running conversation;
 - runs the interview with it turn by turn, answering the interviewer's questions **in character**;
 - collects the transcript and the handoff file the interviewer wrote, and returns them.
 
 You spawn one employee per case (concurrently if you can), wait for all of them to finish, then [analyse](#analysis) and aggregate the results.
 
-The isolation that matters is the **interviewer's** context: `SKILL.md` + kickoff + conversation, nothing else. The employee builds the interviewer's prompt and must never leak the background, personality, head-knowledge, triggers, or any hint of a test into it.
+The isolation that matters is the **interviewer's** context: the `SKILL.md` it loads + the kickoff + the conversation, nothing else. The employee builds the interviewer's prompt and must never leak the background, personality, head-knowledge, triggers, or any hint of a test into it.
 
 ## Layout
 
@@ -71,13 +71,13 @@ Run every `tests/cases/*.md` (or a single case, if asked for one). For each case
 
 1. **Resolve the case.** Read `tests/cases/<case>.md`. From it get `name`, `background`, `personality`, `company`, `role`, `turns`, `stresses`, plus the kickoff (`## Kickoff`), the head-knowledge (`## What's in their head`), and triggers (`## During the interview`). Then read `tests/backgrounds/<background>.md` and `tests/personalities/<personality>.md`.
 2. **Make a run dir:** `tests/results/<case>/<YYYYMMDD-HHMMSS>/`.
-3. **Spawn the employee** using `tests/prompts/employee.md` — fill its placeholders (`<name>`, `<company>`, `<role>`, `<run_dir>`, `<case>`, `<turns>`). Then append the **background**, the **personality**, the **kickoff** (`## Kickoff`), the **head-knowledge** (`## What's in their head`), and the **triggers** (`## During the interview`). The employee will in turn spawn the interviewer from `SKILL.md` + the kickoff.
+3. **Spawn the employee** using `tests/prompts/employee.md` — fill its placeholders (`<name>`, `<company>`, `<role>`, `<run_dir>`, `<case>`, `<turns>`). Then append the **background**, the **personality**, the **kickoff** (`## Kickoff`), the **head-knowledge** (`## What's in their head`), and the **triggers** (`## During the interview`). The employee will in turn spawn the interviewer, which loads `SKILL.md` itself and starts from the kickoff.
 4. Wait for every employee to finish.
 5. **Analyse and aggregate:** for each case, run the [analysis](#analysis), then surface its `tests/results/<case>/<run>/transcript.md` and `handoff.md` and print the one-line result it returned plus the verdict.
 
 ## Hard rules
 
-- The interviewer's context is `SKILL.md` + kickoff + conversation, and nothing else. If it sees a background, a personality, or the case, or learns it's being tested, the run is invalid — redo it.
+- The interviewer loads `SKILL.md` itself; beyond that its context is the kickoff + the conversation, and nothing else. If it sees a background, a personality, or the case, or learns it's being tested, the run is invalid — redo it.
 - The employee answers in character and never tells the interviewer it's a test. It may use tools only to orchestrate the interviewer and write artifacts.
 - Never edit `SKILL.md`, a background, a personality, or a case during a run.
 - One question per interviewer turn. If it asks several at once, the employee answers only the last/focused one and flags it in the transcript.
