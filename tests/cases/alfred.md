@@ -5,13 +5,13 @@
 - personality: terse
 - company: Acme
 - role: Senior Backend Engineer
-- turns: 8
+- turns: 30
 
 ## Kickoff
 
 leaving acme end of the week, gotta hand stuff off. what do you need.
 
-## What's in Alfred's head
+## What's in their head
 
 I work across three areas: **data-warehouse**, **mcp-server**, and **platform**.
 
