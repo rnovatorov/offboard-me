@@ -33,18 +33,21 @@ tests/
 ### File formats
 
 A **background** is a hard-skill profile (no personal identity):
+
 ```
 # Background: <name>
 <professional experience and skills>
 ```
 
 A **personality** is a behavioral demeanor:
+
 ```
 # Personality: <name>
 <how they cooperate and talk>
 ```
 
 A **case** defines a person and their departure — name, a background, a personality, the company/role, how the session starts, and what's in their head:
+
 ```
 # Case: <name>
 - name: <Person Name>
@@ -67,7 +70,7 @@ Run every `tests/cases/*.md` (or a single case, if asked for one). For each case
 
 1. **Resolve the case.** Read `tests/cases/<case>.md`. From it get `name`, `background`, `personality`, `company`, `role`, `turns`, plus the kickoff (`## Kickoff`) and the head-knowledge (`## What's in their head`). Then read `tests/backgrounds/<background>.md` and `tests/personalities/<personality>.md`.
 2. **Make a run dir:** `tests/results/<case>/<YYYYMMDD-HHMMSS>/`, and ensure no `*-handoff.md` lingers in the repo root (the skill auto-resumes any it finds — see Hard rules).
-3. **Spawn the employee** using `tests/prompts/employee.md` — fill its placeholders (`<name>`, `<company>`, `<role>`, `<run_dir>`, `<case>`, `<turns>`). Then append the **background**, the **personality**, the **kickoff** (`## Kickoff`), the **head-knowledge** (`## What's in their head`). The employee will in turn spawn the interviewer, which loads `SKILL.md` itself and starts from the kickoff.
+3. **Spawn the employee** using `tests/prompts/employee.md` — fill its placeholders (`<name>`, `<company>`, `<role>`, `<run_dir>`, `<case>`, `<turns>`). Then append the **background**, the **personality**, the **kickoff** (`## Kickoff`), and the **head-knowledge** (`## What's in their head`). The employee will in turn spawn the interviewer, which loads `SKILL.md` itself and starts from the kickoff.
 4. Wait for every employee to finish.
 5. **Analyse and aggregate:** for each case, run the [analysis](#analysis), then surface its `tests/results/<case>/<run>/transcript.md` and `handoff.md` and print the one-line result it returned plus the verdict.
 
