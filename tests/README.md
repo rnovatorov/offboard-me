@@ -77,7 +77,7 @@ Run every `tests/cases/*.md` (or a single case, if asked for one). For each case
 - The employee answers in character and never tells the interviewer it's a test. It may use tools only to orchestrate the interviewer and write artifacts.
 - Never edit `SKILL.md`, a background, a personality, or a case during a run.
 - One question per interviewer turn. If it asks several at once, the employee answers only the last/focused one and flags it in the transcript.
-- Respect the turn budget as a hard cap — testing is expensive.
+- Respect the turn budget as a hard cap — it's a circuit breaker.
 - **Clean repo root.** The skill (`SKILL.md` step 0) resumes any `*-handoff.md` it finds in its working directory without checking whose it is. Before a run, the primary removes any `*-handoff.md` from the repo root; after copying its handoff to the run dir, each employee removes its own file (by name, not a glob, so parallel cases don't clobber each other).
 
 ## Analysis
