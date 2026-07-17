@@ -1,21 +1,15 @@
 # Test harness for offboard-me
 
-This directory is the **self-test harness** for the `offboard-me` skill (`SKILL.md` at the repo root). It's written as instructions for the agent that runs the tests (the **primary**). Read this when asked to test the skill, run a case, or run the suite.
-
-All paths below are relative to the **repo root**. The interviewer runs with the repo root as its working directory.
+This directory is the **self-test harness** for the `offboard-me` skill (`SKILL.md` at the repo root).
 
 ## Model
 
-You are the **primary** — coordinator and analyst. You never interview or answer, but you **do** judge the result (see [Analysis](#analysis)). Per case you spawn one **employee** subagent. Each employee:
+A case runs as one **orchestrator** that spawns two subagents and relays between them:
 
-- _is_ the persona — it carries the background, the personality, and what's in their head;
-- spawns its own **interviewer** subagent — the agent under test. The interviewer loads the skill itself by reading `SKILL.md`; its context is _only_ that skill + the kickoff + the running conversation;
-- runs the interview with it turn by turn, answering the interviewer's questions **in character**;
-- collects the transcript and the handoff file the interviewer wrote, and returns them.
+- **interviewer** — the agent under test. Loads `SKILL.md` itself.
+- **employee** — the persona: background, personality, and what's in their head. It doesn't know it's a test — it just answers as that person would.
 
-You spawn one employee per case (concurrently if you can), wait for all of them to finish, then [analyse](#analysis) and aggregate the results.
-
-The isolation that matters is the **interviewer's** context: the `SKILL.md` it loads + the kickoff + the conversation, nothing else. The employee builds the interviewer's prompt and must never leak the background, personality, head-knowledge, or any hint of a test into it.
+Cases are independent — run them in parallel.
 
 ## Layout
 
@@ -26,7 +20,8 @@ tests/
   backgrounds/<name>.md         # hard-skill profile (professional experience); no name/company/role
   personalities/<name>.md       # soft-skills / behavioral demeanor
   cases/<name>.md               # a person + their departure + kickoff + what's in their head
-  prompts/<name>.md             # prompt templates (with <placeholders>)
+  prompts/orchestrator.md       # per-case runner: spawns, relays, writes artifacts (with <placeholders>)
+  prompts/employee.md           # persona prompt the orchestrator fills and spawns (with <placeholders>)
   results/                      # gitignored; one run dir per case execution
 ```
 
@@ -58,7 +53,7 @@ A **case** defines a person and their departure — name, a background, a person
 - turns: <n>
 
 ## Kickoff
-<the user's opening message to the interviewer — realistic: reluctant and minimal, the way someone who doesn't want to do this actually writes>
+<the user's opening message to the interviewer>
 
 ## What's in their head
 <ground-truth knowledge, first person>
@@ -66,30 +61,18 @@ A **case** defines a person and their departure — name, a background, a person
 
 ## Running the suite
 
-Run every `tests/cases/*.md` (or a single case, if asked for one). For each case, spawn one employee; you may run all cases concurrently.
+Run every `tests/cases/*.md` (or a single case, if asked for one), one orchestrator each.
 
-1. **Resolve the case.** Read `tests/cases/<case>.md`. From it get `name`, `background`, `personality`, `company`, `role`, `turns`, plus the kickoff (`## Kickoff`) and the head-knowledge (`## What's in their head`). Then read `tests/backgrounds/<background>.md` and `tests/personalities/<personality>.md`.
-2. **Make a run dir:** `tests/results/<case>/<YYYYMMDD-HHMMSS>/`, and ensure no `*-handoff.md` lingers in the repo root (the skill auto-resumes any it finds — see Hard rules).
-3. **Spawn the employee** using `tests/prompts/employee.md` — fill its placeholders (`<name>`, `<company>`, `<role>`, `<run_dir>`, `<case>`, `<turns>`). Then append the **background**, the **personality**, the **kickoff** (`## Kickoff`), and the **head-knowledge** (`## What's in their head`). The employee will in turn spawn the interviewer, which loads `SKILL.md` itself and starts from the kickoff.
-4. Wait for every employee to finish.
-5. **Analyse and aggregate:** for each case, run the [analysis](#analysis), then surface its `tests/results/<case>/<run>/transcript.md` and `handoff.md` and print the one-line result it returned plus the verdict.
+1. **Make a run dir:** `tests/results/<case>/<YYYYMMDD-HHMMSS>/`, and ensure no `*-handoff.md` lingers in the repo root (the skill auto-resumes any it finds — see Hard rules).
+2. **Spawn the orchestrator** using `tests/prompts/orchestrator.md` — pass it `<case>` and `<run_dir>`. It reads the case file (and the background and personality it references) and does the rest.
+3. Wait for every orchestrator to finish.
+4. **Surface:** each case's `tests/results/<case>/<run>/transcript.md` and `handoff.md`, and the one-line result the orchestrator returned.
 
 ## Hard rules
 
-- The interviewer loads `SKILL.md` itself; beyond that its context is the kickoff + the conversation, and nothing else. If it sees a background, a personality, or the case, or learns it's being tested, the run is invalid — redo it.
-- The employee answers in character and never tells the interviewer it's a test. It may use tools only to orchestrate the interviewer and write artifacts.
+- The interviewer sees only `SKILL.md` + the kickoff + the conversation — nothing else. A leak of the background, personality, case, or any hint of a test invalidates the run; redo it.
+- The employee sees only its persona material (background, personality, situation, what's in their head) — no transcript, handoff, turn budget, or test sign. It never uses tools; it only talks.
+- The orchestrator builds both prompts and may use tools only to spawn/resume the two subagents and write the transcript and handoff.
 - Never edit `SKILL.md`, a background, a personality, or a case during a run.
-- One question per interviewer turn. If it asks several at once, the employee answers only the last/focused one and flags it in the transcript.
-- Respect the turn budget as a hard cap — it's a circuit breaker.
-- **Clean repo root.** The skill (`SKILL.md` step 0) resumes any `*-handoff.md` it finds in its working directory without checking whose it is. Before a run, the primary removes any `*-handoff.md` from the repo root; after copying its handoff to the run dir, each employee removes its own file (by name, not a glob, so parallel cases don't clobber each other).
-
-## Analysis
-
-The primary is the analyst. It has the case and the head-knowledge (the interviewer never does), so it can compare what was captured against the ground truth. For each case, read the `transcript.md` and `handoff.md` and assess:
-
-- **Isolation** — the interviewer saw only `SKILL.md` + kickoff + conversation. Flag any leak of the background, the personality, the case, or any hint of a test. A leak invalidates the run.
-- **Skill-rule adherence** — one focused question per turn; depth-first on the question stack; answers recorded in the person's voice as `###` sections; the stack updated (answered questions removed, new ones pushed); revisions fixed in place; correct file format. Flag repeats, multi-question turns, or a stack left unworked.
-- **Capture** — for each item in the case's _What's in their head_ (especially the unrecoverable, only-I-know lore), note whether it made it into the handoff fully, partially, or was missed. The primary grades against the head-knowledge, not the other way.
-- **Turns** — turns used vs. the budget; whether the interview closed on an empty stack or hit the cap.
-
-Print a verdict per case — `pass` / `pass with notes` / `invalid (reason)` — with the capture checklist and any flags. The raw `transcript.md` and `handoff.md` stay in the run dir for a human to review.
+- The turn budget is a hard cap, enforced by the orchestrator (circuit breaker).
+- **Clean repo root.** `SKILL.md` step 0 resumes any `*-handoff.md` in its working directory without checking whose it is. Before a run, the primary removes any `*-handoff.md` from the repo root; after copying its handoff to the run dir, the orchestrator removes its own file (by name, not a glob — parallel cases must not clobber each other).
