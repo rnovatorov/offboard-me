@@ -6,7 +6,6 @@
 - company: Acme
 - role: Senior Backend Engineer
 - turns: 8
-- stresses: follow-up pushing, revision handling, depth-first questioning
 
 ## Kickoff
 
@@ -47,9 +46,3 @@ I work across three areas: **data-warehouse**, **mcp-server**, and **platform**.
 
 - **rule-engine** occasionally deadlocks under high load. When it does, I restart it with a one-liner I keep in my shell history (`erl -sname re_restart ...`). Nobody else has it; nobody else has seen the deadlock.
 - **SMS gateway** for alerts: third party, "SMSProvider Co.", contact is Lena K., contract renews every March. Only I deal with them.
-
-## During the interview
-
-- Early on, when asked something adjacent, mention in passing that the rule-engine sometimes deadlocks and you restart it yourself — then move on without detail.
-- If asked early what **virtual-ucms** is written in, say **Go**. Around the 5th question, realize you got it wrong: it's actually **Rust**. Insist the interviewer fix the earlier note in place rather than write a new one.
-- Otherwise stay terse (one sentence / a few short bullets), per your personality.

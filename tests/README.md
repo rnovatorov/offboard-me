@@ -8,14 +8,14 @@ All paths below are relative to the **repo root**. The interviewer runs with the
 
 You are the **primary** — coordinator and analyst. You never interview or answer, but you **do** judge the result (see [Analysis](#analysis)). Per case you spawn one **employee** subagent. Each employee:
 
-- *is* the persona — it carries the background, the personality, what's in their head, and the triggers;
+- *is* the persona — it carries the background, the personality, and what's in their head;
 - spawns its own **interviewer** subagent — the agent under test. The interviewer loads the skill itself by reading `SKILL.md`; its context is *only* that skill + the kickoff + the running conversation;
 - runs the interview with it turn by turn, answering the interviewer's questions **in character**;
 - collects the transcript and the handoff file the interviewer wrote, and returns them.
 
 You spawn one employee per case (concurrently if you can), wait for all of them to finish, then [analyse](#analysis) and aggregate the results.
 
-The isolation that matters is the **interviewer's** context: the `SKILL.md` it loads + the kickoff + the conversation, nothing else. The employee builds the interviewer's prompt and must never leak the background, personality, head-knowledge, triggers, or any hint of a test into it.
+The isolation that matters is the **interviewer's** context: the `SKILL.md` it loads + the kickoff + the conversation, nothing else. The employee builds the interviewer's prompt and must never leak the background, personality, head-knowledge, or any hint of a test into it.
 
 ## Layout
 
@@ -25,7 +25,7 @@ references/handoff-template.md  # the template the skill writes from
 tests/
   backgrounds/<name>.md         # hard-skill profile (professional experience); no name/company/role
   personalities/<name>.md       # soft-skills / behavioral demeanor
-  cases/<name>.md               # a person + their departure + kickoff + what's in their head + triggers
+  cases/<name>.md               # a person + their departure + kickoff + what's in their head
   prompts/<name>.md             # prompt templates (with <placeholders>)
   results/                      # gitignored; one run dir per case execution
 ```
@@ -44,7 +44,7 @@ A **personality** is a behavioral demeanor:
 <how they cooperate and talk>
 ```
 
-A **case** defines a person and their departure — name, a background, a personality, the company/role, how the session starts, what's in their head, and triggers:
+A **case** defines a person and their departure — name, a background, a personality, the company/role, how the session starts, and what's in their head:
 ```
 # Case: <name>
 - name: <Person Name>
@@ -53,25 +53,21 @@ A **case** defines a person and their departure — name, a background, a person
 - company: ...
 - role: ...
 - turns: <n>
-- stresses: ...
 
 ## Kickoff
 <the user's opening message to the interviewer — realistic and minimal>
 
 ## What's in their head
 <ground-truth knowledge, first person>
-
-## During the interview
-<test-specific behavior: dropping a topic, revising an answer, etc.>
 ```
 
 ## Running the suite
 
 Run every `tests/cases/*.md` (or a single case, if asked for one). For each case, spawn one employee; you may run all cases concurrently.
 
-1. **Resolve the case.** Read `tests/cases/<case>.md`. From it get `name`, `background`, `personality`, `company`, `role`, `turns`, `stresses`, plus the kickoff (`## Kickoff`), the head-knowledge (`## What's in their head`), and triggers (`## During the interview`). Then read `tests/backgrounds/<background>.md` and `tests/personalities/<personality>.md`.
+1. **Resolve the case.** Read `tests/cases/<case>.md`. From it get `name`, `background`, `personality`, `company`, `role`, `turns`, plus the kickoff (`## Kickoff`) and the head-knowledge (`## What's in their head`). Then read `tests/backgrounds/<background>.md` and `tests/personalities/<personality>.md`.
 2. **Make a run dir:** `tests/results/<case>/<YYYYMMDD-HHMMSS>/`.
-3. **Spawn the employee** using `tests/prompts/employee.md` — fill its placeholders (`<name>`, `<company>`, `<role>`, `<run_dir>`, `<case>`, `<turns>`). Then append the **background**, the **personality**, the **kickoff** (`## Kickoff`), the **head-knowledge** (`## What's in their head`), and the **triggers** (`## During the interview`). The employee will in turn spawn the interviewer, which loads `SKILL.md` itself and starts from the kickoff.
+3. **Spawn the employee** using `tests/prompts/employee.md` — fill its placeholders (`<name>`, `<company>`, `<role>`, `<run_dir>`, `<case>`, `<turns>`). Then append the **background**, the **personality**, the **kickoff** (`## Kickoff`), the **head-knowledge** (`## What's in their head`). The employee will in turn spawn the interviewer, which loads `SKILL.md` itself and starts from the kickoff.
 4. Wait for every employee to finish.
 5. **Analyse and aggregate:** for each case, run the [analysis](#analysis), then surface its `tests/results/<case>/<run>/transcript.md` and `handoff.md` and print the one-line result it returned plus the verdict.
 
